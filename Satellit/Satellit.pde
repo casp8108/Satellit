@@ -32,26 +32,36 @@ void setup() {
   // table = loadTable("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.csv", "header");
   table = loadTable("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv", "header"); //der DER DER WAAHH WAAA SE MIG ***********************************
   Jay = loadJSONObject("https://www.n2yo.com/rest/v1/satellite/positions/25544/41.702/-76.014/0/2/&apiKey=EVZW8Y-GY7GW3-U6FV47-4KH5");
+ 
 
   noStroke();
   globe = createShape(SPHERE, r);
   globe.setTexture(earth);
+ 
 }
 
 
 
 void draw() {
-  background(51);
+   JSONArray posit = Jay.getJSONArray("positions");
+
+    JSONObject a = posit.getJSONObject(0);
+
+    float latt = a.getFloat("satlatitude");
+
+    float lont = a.getFloat("satlongitude");
+    float time = a.getFloat("timestamp");
+  clear();
+  text("The white box shows the position of the satelite Space station",0,10);
+  text("Satelite latitude  "+latt,0,20);
+  text("Satelite longitude "+lont,0,30);
+  text("Timestamp  "+time,0,40);
   translate(width*0.5, height*0.5);
   rotateY(angle);
 
-  if (mouseX<50||mouseX>width-50) {
-    rotator = mouseX/(width/2)-0.5;
-  } else {
-    rotator=0;
-  }
-  println(rotator);
-  angle += rotator/2; // divideret med 2 er bare fordi så er det langsommere
+ rotator = 1;
+ 
+  angle += rotator/5; // divideret med 2 er bare fordi så er det langsommere
 
   lights();
   fill(200);
@@ -115,15 +125,15 @@ void draw() {
 
 
     pushMatrix();
-
+text("SPACE STATION",10,10);
     translate(x, y, z);
 
     rotate(angleb, raxis.x, raxis.y, raxis.z);
 
     fill(255);
-
+   
     box(10, 10, 10);
-
+    
     popMatrix();
   }
 }
